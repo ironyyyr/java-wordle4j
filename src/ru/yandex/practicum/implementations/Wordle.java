@@ -70,7 +70,7 @@ public class Wordle {
                         System.out.println(wordleGame.playStep(userAnswer));
                     } catch (IncorrectWordFormat incorrectWordFormat) {
                         System.out.println("Длина слова должна быть равна 5 символам.");
-                    } catch (WordNotFoundInDictionary wordNotFoundInDictionary){
+                    } catch (WordNotFoundInDictionary wordNotFoundInDictionary) {
                         System.out.println(wordNotFoundInDictionary.getMessage());
                     } catch (WordWasAlreadyUsed wordWasAlreadyUsed) {
                         System.out.println(wordWasAlreadyUsed.getMessage());

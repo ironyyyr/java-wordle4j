@@ -116,7 +116,7 @@ public class WordleGame {
     public String findWordToAdvice() {
         Character characterToAdvice = ' ';
         int characterToAdvicePosition = -1;
-        for (Integer key: isSymbolAnswered.keySet()) {
+        for (Integer key : isSymbolAnswered.keySet()) {
             if (!isSymbolAnswered.get(key)) {
                 characterToAdvice = answerSymbols.get(key);
                 characterToAdvicePosition = key;

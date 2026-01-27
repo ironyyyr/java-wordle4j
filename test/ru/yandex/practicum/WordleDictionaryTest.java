@@ -56,7 +56,7 @@ public class WordleDictionaryTest {
     @Test
     void testHalfCorrectCompareWords() {
         assertEquals("^^-^-",
-            wordleDictionary.compareWords(result, halfResult),
+                wordleDictionary.compareWords(result, halfResult),
                 "Слова некорректно сравниваются"
         );
     }

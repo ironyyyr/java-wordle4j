@@ -55,7 +55,7 @@ public class WordleDictionaryLoaderTest {
     }
 
     @Test
-    void testLoadDictionarySuccess() throws IOException{
+    void testLoadDictionarySuccess() throws IOException {
         String dictionaryName = "dictionary.txt";
         Path dictionaryFile = dictionaryPath.resolve(dictionaryName);
         List<String> words = List.of("собака", "кот", "слон");
@@ -66,7 +66,7 @@ public class WordleDictionaryLoaderTest {
         List<String> result = wordleDictionaryLoader.loadDictionary(dictionaryName);
 
         assertAll(
-                () -> assertEquals(result.size(), words.size(),"Количество слов не совпадает"),
+                () -> assertEquals(result.size(), words.size(), "Количество слов не совпадает"),
                 () -> assertIterableEquals(result, words, "Порядок слов не совпадает"),
                 () -> assertTrue(getLogInfo().isEmpty(), "Лог должен быть пустым")
         );
@@ -98,9 +98,9 @@ public class WordleDictionaryLoaderTest {
     @Test
     void testLoadDictionaryWithInvalidPath() throws IOException {
         WordleDictionaryLoader runtimeExceptionDictionaryLoader = new WordleDictionaryLoader(
-          "UTF-8",
-          "non:exiting/path/",
-          logPrintWriter
+                "UTF-8",
+                "non:exiting/path/",
+                logPrintWriter
         );
 
         assertThrows(RuntimeException.class, () ->

@@ -22,7 +22,7 @@ public class WordleDictionary {
     }
 
     public List<String> formatDictionary(List<String> dictionary) {
-        List <String> words = new ArrayList<>();
+        List<String> words = new ArrayList<>();
         for (String word : dictionary) {
             if (word.isBlank() || word.trim().length() != WORD_LENGTH) {
                 continue;
