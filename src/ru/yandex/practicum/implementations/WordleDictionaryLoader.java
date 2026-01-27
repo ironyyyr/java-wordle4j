@@ -50,7 +50,7 @@ public class WordleDictionaryLoader {
 
         if (!Files.exists(fullPath)) {
             logOutput.println("Файла словаря " + fileName + " не существует.");
-            throw new DictionaryFileNotFoundException("Файла словаря" + fileName + " не существует.");
+            throw new DictionaryFileNotFoundException("Файла словаря " + fileName + " не существует.");
         }
 
         try (BufferedReader bufferedReader = Files.newBufferedReader(fullPath,
