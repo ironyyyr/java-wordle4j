@@ -105,7 +105,7 @@ public class WordleDictionaryLoaderTest {
                 runtimeExceptionDictionaryLoader.loadDictionary("test.jpg"));
 
         assertTrue(getLogInfo().contains("Некорректный путь к файлу."),
-                "Сообщение в лог записано некорректно"
+                "Должно быть " + getLogInfo() + ". Имеем - Некорректный путь к файлу."
         );
     }
 
