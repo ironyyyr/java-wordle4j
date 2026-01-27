@@ -11,6 +11,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -99,7 +100,7 @@ public class WordleDictionaryLoaderTest {
                 logPrintWriter
         );
 
-        assertThrows(RuntimeException.class, () ->
+        assertThrows(InvalidPathException.class, () ->
                 runtimeExceptionDictionaryLoader.loadDictionary("test.jpg"));
         assertTrue(getLogInfo().contains("Некорректный путь к файлу"), "Сообщение в лог записано некорректно");
     }
