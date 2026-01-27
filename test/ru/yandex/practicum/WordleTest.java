@@ -1,14 +1,12 @@
 package ru.yandex.practicum;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import ru.yandex.practicum.exceptions.IncorrectWordFormat;
 import ru.yandex.practicum.exceptions.WordNotFoundInDictionary;
 import ru.yandex.practicum.implementations.WordleDictionary;
-import ru.yandex.practicum.implementations.WordleDictionaryLoader;
 import ru.yandex.practicum.implementations.WordleGame;
 
 import java.io.ByteArrayOutputStream;

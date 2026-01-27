@@ -1,7 +1,6 @@
 package ru.yandex.practicum;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -9,13 +8,10 @@ import ru.yandex.practicum.exceptions.DictionaryIsEmptyExeption;
 import ru.yandex.practicum.implementations.WordleDictionaryLoader;
 
 import java.io.*;
-import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
