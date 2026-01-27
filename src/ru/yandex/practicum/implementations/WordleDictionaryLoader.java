@@ -44,7 +44,7 @@ public class WordleDictionaryLoader {
         try {
             fullPath = Path.of(dictionaryPath, fileName);
         } catch (InvalidPathException invalidPathException) {
-            logOutput.println("Некорректный путь к файлу");
+            logOutput.println("Некорректный путь к файлу.");
             throw new DictionaryFileNotFoundException(invalidPathException.getMessage());
         }
 
