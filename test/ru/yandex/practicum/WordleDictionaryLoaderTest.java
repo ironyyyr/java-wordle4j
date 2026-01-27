@@ -104,8 +104,8 @@ public class WordleDictionaryLoaderTest {
         assertThrows(DictionaryFileNotFoundException.class, () ->
                 runtimeExceptionDictionaryLoader.loadDictionary("test.jpg"));
 
-        assertTrue(getLogInfo().contains("Некорректный путь к файлу."),
-                "Должно быть " + getLogInfo() + ". Имеем - Некорректный путь к файлу."
+        assertTrue(getLogInfo().contains("Файла словаря test.jpg не существует."),
+                "Должно быть /" + getLogInfo() + ". Имеем - Некорректный путь к файлу."
         );
     }
 
