@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import ru.yandex.practicum.exceptions.DictionaryFileNotFoundException;
 import ru.yandex.practicum.exceptions.DictionaryIsEmptyExeption;
 import ru.yandex.practicum.implementations.WordleDictionaryLoader;
 
@@ -100,7 +101,7 @@ public class WordleDictionaryLoaderTest {
                 logPrintWriter
         );
 
-        assertThrows(InvalidPathException.class, () ->
+        assertThrows(DictionaryFileNotFoundException.class, () ->
                 runtimeExceptionDictionaryLoader.loadDictionary("test.jpg"));
         assertTrue(getLogInfo().contains("Некорректный путь к файлу"), "Сообщение в лог записано некорректно");
     }
