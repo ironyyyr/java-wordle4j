@@ -30,7 +30,7 @@ public class Wordle {
     public static void main(String[] args) {
         Path logFilePath = Path.of(WORKING_PATH, LOGFILE_NAME);
         try {
-            if (Files.exists(logFilePath)) {
+            if (!Files.exists(logFilePath)) {
                 logFilePath = Files.createFile(logFilePath);
             }
         } catch (IOException ioException) {
@@ -78,11 +78,13 @@ public class Wordle {
                 if (wordleGame.getSteps() > MAX_STEPS && !wordleGame.isWordGuessed()) {
                     System.out.println("Вы проиграли. Ответ - " + wordleGame.getAnswer());
                     break;
-                } else if (wordleGame.isWordGuessed()) {
+                }
+
+                if (wordleGame.isWordGuessed()) {
+                    System.out.println("Вы выиграли. Ответ - " + wordleGame.getAnswer());
                     break;
                 }
             }
-            System.out.println("Вы выиграли. Ответ - " + wordleGame.getAnswer());
         } catch (DictionaryFileNotFoundException dictionaryFileNotFoundException) {
             System.err.println(dictionaryFileNotFoundException.getMessage());
         } catch (FileNotFoundException fileNotFoundException) {

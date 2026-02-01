@@ -24,21 +24,21 @@ public class WordleGame {
     private final String answer;
     private final WordleDictionary dictionary;
     private int steps;
-    private final LinkedList<String> usedWords;
     private final LinkedHashMap<Character, Integer> answeredCharacters;
     private final LinkedHashMap<Integer, Character> answerSymbols;
     private final LinkedHashMap<Integer, Boolean> isSymbolAnswered;
-    private PrintWriter logOutput;
+    private final HashSet<Character> isSymbolFoundInWord;
+    private final PrintWriter logOutput;
 
     public WordleGame(String answer, WordleDictionary dictionary, PrintWriter logOutput) {
         this.answer = answer;
         this.steps = 0;
         this.dictionary = dictionary;
-        this.usedWords = new LinkedList<>();
         this.logOutput = logOutput;
         this.answeredCharacters = dictionary.countChars(answer);
         this.answerSymbols = fillHashMapSymbolPos();
-        this.isSymbolAnswered = fillHashMapIsSymbolUsed();
+        this.isSymbolAnswered = fillHashMapIsSymbol();
+        this.isSymbolFoundInWord = new HashSet<>();
     }
 
     private LinkedHashMap<Integer, Character> fillHashMapSymbolPos() {
@@ -50,7 +50,7 @@ public class WordleGame {
         return linkedHashMap;
     }
 
-    private LinkedHashMap<Integer, Boolean> fillHashMapIsSymbolUsed() {
+    private LinkedHashMap<Integer, Boolean> fillHashMapIsSymbol() {
         LinkedHashMap<Integer, Boolean> linkedHashMap = new LinkedHashMap<>();
         for (int i = 0; i < answer.length(); i++) {
             linkedHashMap.put(i, false);
@@ -82,22 +82,23 @@ public class WordleGame {
             logOutput.println("Слово " + userAnswer + " не найдено в словаре.");
             throw new WordNotFoundInDictionary("Слово " + userAnswer + " не найдено в словаре.");
         }
-
-        if (usedWords.contains(userAnswer)) {
-            logOutput.println("Слово " + userAnswer + " уже было использовано.");
-            throw new WordWasAlreadyUsed("Слово " + userAnswer + " уже было использовано.");
-        }
     }
 
     public String wordleRound(String userAnswer) {
-        usedWords.add(userAnswer);
+
+        userAnswer = dictionary.normalizeWord(userAnswer);
         String resultOfCompare = dictionary.compareWords(answer, userAnswer);
+
         for (int i = 0; i < answer.length(); i++) {
             char currentChar = answer.charAt(i);
             char currentCompareSymbol = resultOfCompare.charAt(i);
+
             if (currentCompareSymbol == '+') {
                 dictionary.updateAnswerHashMap(answeredCharacters, currentChar);
+                isSymbolFoundInWord.add(currentChar);
                 isSymbolAnswered.put(i, true);
+            } else if (currentCompareSymbol == '^') {
+                isSymbolFoundInWord.add(currentChar);
             }
         }
         return resultOfCompare;
@@ -113,7 +114,7 @@ public class WordleGame {
         return countUnguessedCharacters(answeredCharacters) == 0;
     }
 
-    public String findWordToAdvice() {
+    public int findWordToAdvice() {
         Character characterToAdvice = ' ';
         int characterToAdvicePosition = -1;
         for (Integer key : isSymbolAnswered.keySet()) {
@@ -121,13 +122,14 @@ public class WordleGame {
                 characterToAdvice = answerSymbols.get(key);
                 characterToAdvicePosition = key;
                 isSymbolAnswered.put(key, true);
+                isSymbolFoundInWord.add(characterToAdvice);
                 break;
             }
         }
 
         updateLinkedHashMap(answeredCharacters, characterToAdvice);
 
-        return dictionary.findAdviceWord(characterToAdvice, characterToAdvicePosition);
+        return characterToAdvicePosition;
     }
 
     private void updateLinkedHashMap(LinkedHashMap<Character, Integer> userLinkedHashMap, Character character) {
@@ -145,13 +147,52 @@ public class WordleGame {
     }
 
     public String giveAdvice() {
-        String adviceWord = findWordToAdvice();
-        while (usedWords.contains(adviceWord.toLowerCase())) {
-            adviceWord = findWordToAdvice();
+        String advice = "";
+        int characterPosToAdvice = findWordToAdvice();
+
+        for (String word : dictionary.getWords()) {
+            for (int i = 0; i < word.length(); i++) {
+                if (
+                        word.charAt(characterPosToAdvice) == answer.charAt(characterPosToAdvice) &&
+                                word.matches(createStrictRegExp()) &&
+                                word.matches(createSoftRegExp())
+                ) {
+                    advice = word;
+                }
+            }
         }
 
-        usedWords.add(adviceWord);
-        return adviceWord;
+        StringBuilder replacedCharacterToUpperCase = new StringBuilder(advice);
+        replacedCharacterToUpperCase.setCharAt(characterPosToAdvice,
+                Character.toUpperCase(advice.charAt(characterPosToAdvice)));
+
+        return replacedCharacterToUpperCase.toString();
+    }
+
+    public String createStrictRegExp() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < answer.length(); i++) {
+            if (isSymbolAnswered.get(i)) {
+                stringBuilder.append(answer.charAt(i));
+            } else {
+                stringBuilder.append(".{1}");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public String createSoftRegExp() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("^");
+
+        for (int i = 0; i < answer.length(); i++) {
+            if (isSymbolFoundInWord.contains(answer.charAt(i))) {
+                stringBuilder.append("(?=.*").append(answer.charAt(i)).append(")");
+            }
+        }
+
+        stringBuilder.append(".*$");
+        return stringBuilder.toString();
     }
 
     public String getAnswer() {

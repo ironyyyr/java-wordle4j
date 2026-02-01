@@ -30,7 +30,7 @@ class WordleTest {
     private WordleDictionary wordleDictionary;
     private final String answer = "кошка";
     private final String userAnswer = "котик";
-    private final String userAdvice = "каШпо";
+    private final String userAdvice = "коШак";
 
     @BeforeEach
     void setUp() throws IOException {
@@ -40,7 +40,7 @@ class WordleTest {
         logOutputStream = new ByteArrayOutputStream();
         logPrintWriter = new PrintWriter(logOutputStream, true);
 
-        List<String> dictionary = new ArrayList<>(List.of("кошка", "котик", "арбуз", "ягода", "кашпо"));
+        List<String> dictionary = new ArrayList<>(List.of("кошка", "котик", "арбуз", "ягода", "кошак"));
         wordleDictionary = new WordleDictionary(dictionary);
         wordleGame = new WordleGame(answer, wordleDictionary, logPrintWriter);
     }
@@ -103,6 +103,13 @@ class WordleTest {
     void testGetSteps() {
         wordleGame.playStep(userAnswer);
         assertEquals(wordleGame.getSteps(), 1, "Количество ходов в игре некорректно оценивается.");
+    }
+
+    @Test
+    void testCreateStrictRegExpSucces() {
+        wordleGame.playStep(userAnswer);
+        assertEquals(wordleGame.createStrictRegExp(), "ко.{1}.{1}.{1}",
+                "Регулярное выражение некорректно формируется");
     }
 
 

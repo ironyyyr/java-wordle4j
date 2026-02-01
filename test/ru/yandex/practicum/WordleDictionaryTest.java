@@ -14,7 +14,7 @@ public class WordleDictionaryTest {
     private List<String> resultDictionary;
     private WordleDictionary wordleDictionary;
     private final String result = "класс";
-    private final String halfResult = "сссаа";
+    private final String halfResult = "ссссс";
     private final String badResult = "хобот";
 
     @BeforeEach
@@ -51,7 +51,7 @@ public class WordleDictionaryTest {
 
     @Test
     void testHalfCorrectCompareWords() {
-        assertEquals("^^-^-",
+        assertEquals("---++",
                 wordleDictionary.compareWords(result, halfResult),
                 "Слова некорректно сравниваются"
         );

@@ -27,12 +27,13 @@ public class WordleDictionary {
             if (word.isBlank() || word.trim().length() != WORD_LENGTH) {
                 continue;
             }
-            words.add(word.trim().toLowerCase());
+            words.add(normalizeWord(word));
         }
         return words;
     }
 
     public String compareWords(String answer, String userAnswer) {
+
         if (answer.equals(userAnswer)) {
             return "+".repeat(answer.length());
         }
@@ -45,20 +46,21 @@ public class WordleDictionary {
         HashMap<Character, Integer> answerHashMap = countChars(answer);
         HashMap<Character, Integer> userAnswerHashMap = countChars(userAnswer);
 
+        validatePositiveAnswers(answerHashMap, userAnswerHashMap, answer, userAnswer);
+
         for (int i = 0; i < answer.length(); i++) {
             char answerChar = answer.charAt(i);
             char userAnswerChar = userAnswer.charAt(i);
 
             if (answerChar == userAnswerChar) {
-                updateAnswerHashMap(userAnswerHashMap, userAnswerChar);
-                updateAnswerHashMap(answerHashMap, userAnswerChar);
                 stringBuilder.append("+");
                 continue;
             }
 
-            if (answerHashMap.containsKey(userAnswerChar) &&
-                    userAnswerHashMap.get(userAnswerChar) != 0 &&
-                    answerHashMap.get(userAnswerChar) != 0
+            if (
+                    answerHashMap.containsKey(userAnswerChar) &&
+                            userAnswerHashMap.get(userAnswerChar) != 0 &&
+                            answerHashMap.get(userAnswerChar) != 0
             ) {
                 updateAnswerHashMap(userAnswerHashMap, userAnswerChar);
                 updateAnswerHashMap(answerHashMap, userAnswerChar);
@@ -68,6 +70,22 @@ public class WordleDictionary {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public void validatePositiveAnswers(
+            HashMap<Character, Integer> answerHashMap,
+            HashMap<Character, Integer> userAnswerHashMap,
+            String answer,
+            String userAnswer) {
+        for (int i = 0; i < userAnswer.length(); i++) {
+            char userAnswerChar = userAnswer.charAt(i);
+            char answerChar = answer.charAt(i);
+
+            if (answerChar == userAnswerChar) {
+                updateAnswerHashMap(userAnswerHashMap, userAnswerChar);
+                updateAnswerHashMap(answerHashMap, userAnswerChar);
+            }
+        }
     }
 
     public LinkedHashMap<Character, Integer> countChars(String word) {
@@ -99,21 +117,14 @@ public class WordleDictionary {
         return userAnswer.length() == WORD_LENGTH;
     }
 
-    public String findAdviceWord(Character characterToAdvice, int characterPosition) {
-        String adviceWord = "";
-        for (String word : words) {
-            if (word.contains(characterToAdvice.toString()) && word.charAt(characterPosition) == characterToAdvice) {
-                adviceWord = word;
-            }
-        }
-
-        StringBuilder replacedCharacterToUpperCase = new StringBuilder(adviceWord);
-        replacedCharacterToUpperCase.setCharAt(characterPosition, Character.toUpperCase(characterToAdvice));
-        return replacedCharacterToUpperCase.toString();
-    }
-
     public String getNewAnswer() {
         Random random = new Random();
-        return words.get(random.nextInt(words.size()) - 1);
+        return words.get(random.nextInt(words.size() - 1));
+    }
+
+    public String normalizeWord(String userAnswer) {
+        return userAnswer.toLowerCase().
+                replace("ё", "е").
+                trim();
     }
 }
