@@ -20,7 +20,7 @@ import java.util.Scanner;
  */
 public class Wordle {
 
-    private static final String WORKING_PATH = "C:\\Users\\ivan.ivashkin\\IdeaProjects\\java-wordle4j";
+    private static final String WORKING_PATH = "";
     private static final String DICTIONARY_FILE_NAME = "words_ru.txt";
     private static final String ENCODING = "UTF-8";
     private static final String LOGFILE_NAME = "logfile.txt";

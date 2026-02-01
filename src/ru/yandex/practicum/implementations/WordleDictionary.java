@@ -123,8 +123,8 @@ public class WordleDictionary {
     }
 
     public String normalizeWord(String userAnswer) {
-        return userAnswer.toLowerCase().
-                replace("ё", "е").
-                trim();
+        return userAnswer.toLowerCase()
+                .replace("ё", "е")
+                .trim();
     }
 }
